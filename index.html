@@ -1,94 +1,271 @@
 <!DOCTYPE html>
 <html lang="zh-Hant">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="description" content="台南偉文大學職涯 RPG｜選擇年級與科系，挑戰專業魔王，解鎖升學攻略。">
-<title>大學職涯 RPG｜台南偉文</title>
-<style>html,body{margin:0;padding:0;overflow-x:hidden}body{background:#f3f6ff}</style>
+  <meta charset="UTF-8">
+  <base target="_top">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>台南偉文｜大學職涯 RPG</title>
+  <style>
+    :root{
+      --bg:#f3f6ff;--card:#ffffff;--text:#202a43;--muted:#6e7890;--line:#d9e0f2;
+      --primary:#5a63f2;--primary2:#7f52d8;--soft:#eef1ff;--success:#0d8b63;
+      font-family:system-ui,-apple-system,'Noto Sans TC',sans-serif;
+    }
+    *{box-sizing:border-box}
+    body{margin:0;padding:18px;background:radial-gradient(circle at top,#f9fbff,#eef2ff 45%,#f3f6ff 100%);color:var(--text)}
+    .wrap{max-width:820px;margin:auto}
+    .hero{position:relative;overflow:hidden;background:linear-gradient(135deg,#182b59,#4d44b4 50%,#7f52d8);color:#fff;padding:24px;border-radius:24px;box-shadow:0 18px 40px rgba(29,43,104,.18)}
+    .hero::before,.hero::after{content:"";position:absolute;border-radius:50%;background:rgba(255,255,255,.08)}
+    .hero::before{width:220px;height:220px;right:-60px;top:-80px}
+    .hero::after{width:120px;height:120px;left:-20px;bottom:-35px}
+    .tag{font-size:12px;letter-spacing:2px;color:#d5e5ff;position:relative;z-index:2}
+    .hero h1{margin:10px 0 8px;font-size:30px;position:relative;z-index:2}
+    .hero p{margin:0;color:#e3eaff;position:relative;z-index:2}
+    .hero-icons{position:absolute;right:18px;bottom:14px;display:flex;gap:10px;z-index:1}
+    .hero-icons span,.stage-icons span{display:inline-flex;align-items:center;justify-content:center;border-radius:16px;background:rgba(255,255,255,.12);backdrop-filter:blur(4px);width:46px;height:46px;font-size:24px;animation:float 2.6s ease-in-out infinite}
+    .hero-icons span:nth-child(2),.stage-icons span:nth-child(2){animation-delay:.5s}
+    .hero-icons span:nth-child(3),.stage-icons span:nth-child(3){animation-delay:1s}
+    main{background:var(--card);margin-top:16px;border-radius:22px;padding:24px;box-shadow:0 8px 26px rgba(24,40,90,.08)}
+    h2{font-size:24px;margin:8px 0 10px}
+    .muted,.note{color:var(--muted)}
+    .note{font-size:12px;line-height:1.7}
+    .progress{height:10px;border-radius:12px;background:#e7ebf6;overflow:hidden;margin-bottom:18px}
+    .progress>div{height:100%;background:linear-gradient(90deg,var(--primary),#8a59e8);transition:width .3s ease}
+    .stage{position:relative;overflow:hidden;padding:18px 18px 14px;border-radius:18px;background:linear-gradient(135deg,#f8faff,#edf1ff);border:1px solid #e2e7f5;margin-bottom:16px}
+    .stage h3{margin:0 0 6px;font-size:18px}
+    .stage p{margin:0;color:#60708f}
+    .stage-icons{position:absolute;right:14px;top:14px;display:flex;gap:8px}
+    .choices{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+    .choice{position:relative;border:1px solid #dce3f4;background:#fff;border-radius:16px;padding:14px;cursor:pointer;text-align:left;font:inherit;min-height:88px;transition:transform .18s ease, box-shadow .18s ease, border-color .18s ease, background .18s ease;box-shadow:0 4px 10px rgba(50,70,120,.05)}
+    .choice:hover{transform:translateY(-2px);box-shadow:0 10px 20px rgba(50,70,120,.12)}
+    .choice.selected{background:linear-gradient(180deg,#f4f6ff,#ecf0ff);border:2px solid var(--primary);font-weight:700}
+    .choice:focus-visible,.btn:focus-visible{outline:3px solid #88a5ff}
+    .card-top{display:flex;gap:10px;align-items:flex-start}
+    .card-icon{flex:0 0 auto;width:42px;height:42px;border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:23px;background:#eef2ff}
+    .card-text{flex:1}
+    .card-title{font-weight:700;line-height:1.35}
+    .card-sub{font-size:12px;color:#69758d;margin-top:5px;line-height:1.5}
+    .field{margin:14px 0}
+    label{display:block;margin:6px 0;font-weight:600}
+    input,select{width:100%;padding:12px;border:1px solid #cbd3e7;border-radius:10px;font:inherit}
+    .btn{background:linear-gradient(90deg,var(--primary),var(--primary2));color:white;border:0;border-radius:12px;padding:13px 19px;font:inherit;font-weight:700;cursor:pointer;box-shadow:0 8px 18px rgba(88,104,230,.24)}
+    .btn:disabled{opacity:.5;cursor:not-allowed;box-shadow:none}
+    .back{background:#e9edfa;color:#263457;box-shadow:none}
+    .nav{display:flex;justify-content:space-between;gap:12px;margin-top:25px}
+    .q{padding:18px 0;border-bottom:1px solid #e6e9f1}
+    .qtitle{font-weight:700;margin-bottom:10px;line-height:1.5}
+    .opt{padding:12px 12px;display:block;border:1px solid #e0e5f2;border-radius:12px;margin:9px 0;font-weight:400;cursor:pointer;transition:background .18s,border-color .18s,transform .18s}
+    .opt:hover{background:#f7f9ff;transform:translateY(-1px)}
+    .opt input{width:auto;margin-right:8px}
+    .score{text-align:center;background:linear-gradient(180deg,#f5f7ff,#eef2ff);border-radius:18px;padding:22px;border:1px solid #dce5ff}
+    .big{font-size:56px;font-weight:900;color:var(--primary)}
+    .error{color:#ba2146;margin:8px 0;min-height:22px}
+    .success{color:#167a5c}
+    .pill{display:inline-block;border-radius:40px;background:#edf0fb;padding:6px 12px;margin:3px;font-size:13px}
+    .line-box{margin-top:18px;padding:18px;border-radius:18px;background:linear-gradient(135deg,#eefcf3,#f7fff9);border:1px solid #cbefda}
+    .line-title{font-weight:800;font-size:18px;margin-bottom:6px;color:#156b44}
+    .line-btn{display:inline-block;margin-top:10px;padding:12px 18px;border-radius:999px;background:#06c755;color:#fff;text-decoration:none;font-weight:800;box-shadow:0 10px 20px rgba(6,199,85,.18)}
+    .line-btn:hover{transform:translateY(-1px)}
+    .summary-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+    .mini-card{background:#fafbff;border:1px solid #e6ebfa;border-radius:16px;padding:14px}
+    .hidden{display:none}
+    @keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-6px)}}
+    @keyframes pulse{0%,100%{transform:scale(1)}50%{transform:scale(1.06)}}
+    .monster{display:inline-block;animation:pulse 1.8s ease-in-out infinite}
+    @media(max-width:640px){
+      body{padding:10px}.hero{padding:20px}.hero h1{font-size:24px}.hero-icons{position:static;margin-top:12px}.choices,.summary-grid{grid-template-columns:1fr}.choice{min-height:80px}main{padding:18px}
+    }
+  </style>
 </head>
 <body>
-<!-- 台南偉文｜大學職涯 RPG 全版面活動頁。貼至 WordPress「自訂 HTML」區塊。 -->
-<style>
-#waywin-rpg-landing{--navy:#111b43;--indigo:#5445c8;--violet:#8659e8;--gold:#ffda74;--ink:#263154;--muted:#66728f;position:relative;left:50%;margin-left:-50vw;width:100vw;max-width:100vw;overflow:hidden;background:#f3f6ff;color:var(--ink);font-family:system-ui,-apple-system,"Noto Sans TC",sans-serif;line-height:1.65}
-#waywin-rpg-landing *{box-sizing:border-box}
-#waywin-rpg-landing .ww-inner{width:min(1120px,calc(100% - 36px));margin:auto}
-#waywin-rpg-landing .ww-hero{position:relative;isolation:isolate;min-height:570px;padding:85px 0 78px;background:radial-gradient(ellipse at 80% 30%,#6657d0 0,transparent 36%),linear-gradient(125deg,#101b40,#273579 52%,#5936a4);color:#fff}
-#waywin-rpg-landing .ww-hero:before{content:"";position:absolute;inset:0;pointer-events:none;opacity:.3;background-image:radial-gradient(#ffffff 1.2px,transparent 1.2px);background-size:26px 26px;mask-image:linear-gradient(to bottom,#000,transparent)}
-#waywin-rpg-landing .ww-layout{position:relative;display:grid;grid-template-columns:minmax(0,1.25fr) minmax(300px,.75fr);gap:36px;align-items:center}
-#waywin-rpg-landing .ww-kicker{display:inline-block;font-size:13px;letter-spacing:2px;color:#d0d6ff;font-weight:800;margin:0 0 18px}
-#waywin-rpg-landing h1{font-size:clamp(36px,5.4vw,68px);line-height:1.2;letter-spacing:-.04em;margin:0 0 20px;color:#fff;font-weight:900}
-#waywin-rpg-landing h1 em{font-style:normal;color:var(--gold)}
-#waywin-rpg-landing .ww-lead{font-size:clamp(17px,2.1vw,21px);max-width:650px;margin:0 0 24px;color:#e5e9ff}
-#waywin-rpg-landing .ww-tags{display:flex;flex-wrap:wrap;gap:9px;margin:0 0 29px}
-#waywin-rpg-landing .ww-tags span{border:1px solid #8c91e9aa;border-radius:999px;padding:7px 13px;background:#ffffff14;color:#e9ecff;font-size:14px}
-#waywin-rpg-landing .ww-btn{display:inline-flex;justify-content:center;align-items:center;gap:10px;text-align:center;text-decoration:none!important;border-radius:999px;padding:16px 30px;font-size:18px;font-weight:900;transition:transform .2s,box-shadow .2s;background:linear-gradient(135deg,#ffe89a,#ffc25f);color:#382852!important;box-shadow:0 12px 26px #0003}
-#waywin-rpg-landing .ww-btn:hover{transform:translateY(-4px);box-shadow:0 16px 34px #0004}
-#waywin-rpg-landing .ww-small{font-size:13px;margin:12px 0 0;color:#cbd4ff}
-#waywin-rpg-landing .ww-stage-art{position:relative;min-height:320px;display:flex;justify-content:center;align-items:center}
-#waywin-rpg-landing .ww-glow{position:absolute;width:290px;height:290px;border-radius:50%;background:radial-gradient(circle,#a4a3ff70,transparent 68%);filter:blur(6px)}
-#waywin-rpg-landing .ww-boss{position:relative;display:grid;place-items:center;width:255px;height:260px;border-radius:35px;background:linear-gradient(160deg,#8d70f1,#40378d);box-shadow:0 28px 55px #10143d88,inset 0 0 0 5px #ffffff26;animation:ww-bob 3s ease-in-out infinite}
-#waywin-rpg-landing .ww-boss .ww-emoji{font-size:128px;line-height:1;filter:drop-shadow(0 10px 7px #0003)}
-#waywin-rpg-landing .ww-boss strong{position:absolute;bottom:20px;font-size:14px;letter-spacing:3px;color:#ffeaa9}
-#waywin-rpg-landing .ww-float{position:absolute;font-size:55px;filter:drop-shadow(0 8px 12px #16114466);animation:ww-bob 3.5s ease-in-out infinite}
-#waywin-rpg-landing .ww-float.one{top:15px;left:0}#waywin-rpg-landing .ww-float.two{bottom:5px;right:0;animation-delay:.8s}
-#waywin-rpg-landing .ww-health{position:absolute;bottom:0;width:80%;height:13px;background:#171b46;border-radius:50px;padding:3px;box-shadow:0 4px 13px #0007}
-#waywin-rpg-landing .ww-health span{display:block;width:75%;height:100%;border-radius:40px;background:linear-gradient(90deg,#ff6e93,#ffbf65)}
-#waywin-rpg-landing section.ww-section{padding:76px 0}
-#waywin-rpg-landing .ww-heading{text-align:center;font-size:clamp(27px,3.8vw,40px);letter-spacing:-.02em;margin:0 0 10px;color:#1c2756}
-#waywin-rpg-landing .ww-desc{text-align:center;margin:0 auto 36px;max-width:670px;color:var(--muted)}
-#waywin-rpg-landing .ww-cards{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px}
-#waywin-rpg-landing .ww-card{border:1px solid #e4e8fa;border-radius:22px;padding:28px 23px;background:#fff;box-shadow:0 7px 23px #27315d0b;transition:transform .2s,box-shadow .2s}
-#waywin-rpg-landing .ww-card:hover{transform:translateY(-5px);box-shadow:0 12px 28px #27315d20}
-#waywin-rpg-landing .ww-card .ww-icon{font-size:37px;display:inline-block;margin-bottom:12px}
-#waywin-rpg-landing .ww-card h3{font-size:20px;margin:0 0 8px;color:#222f61}
-#waywin-rpg-landing .ww-card p{color:var(--muted);font-size:15px;margin:0}
-#waywin-rpg-landing .ww-subjects{background:#fff}
-#waywin-rpg-landing .ww-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px}
-#waywin-rpg-landing .ww-major{display:flex;justify-content:center;align-items:center;gap:10px;border:1px solid #e1e6f8;background:#f8f9ff;border-radius:16px;text-align:center;padding:19px 10px;font-weight:700;color:#2b3868}
-#waywin-rpg-landing .ww-major span{font-size:23px}
-#waywin-rpg-landing .ww-cta{background:linear-gradient(120deg,#202f6d,#5945ad);text-align:center;color:#fff;padding:68px 0}
-#waywin-rpg-landing .ww-cta h2{font-size:clamp(28px,4vw,42px);margin:0 0 12px;color:#fff}
-#waywin-rpg-landing .ww-cta p{margin:0 0 28px;color:#e9e9ff}
-#waywin-rpg-landing .ww-footer{padding:23px 0;text-align:center;background:#131d46;color:#d3dbff;font-size:13px}
-@keyframes ww-bob{0%,100%{transform:translateY(0)}50%{transform:translateY(-11px)}}
-@media(max-width:780px){#waywin-rpg-landing .ww-layout{grid-template-columns:1fr;text-align:center}#waywin-rpg-landing .ww-hero{padding:58px 0}#waywin-rpg-landing .ww-lead{margin-inline:auto}#waywin-rpg-landing .ww-tags{justify-content:center}#waywin-rpg-landing .ww-stage-art{min-height:285px}#waywin-rpg-landing .ww-boss{width:215px;height:220px}#waywin-rpg-landing .ww-boss .ww-emoji{font-size:105px}#waywin-rpg-landing .ww-cards{grid-template-columns:1fr}#waywin-rpg-landing .ww-grid{grid-template-columns:repeat(2,minmax(0,1fr))}#waywin-rpg-landing section.ww-section{padding:54px 0}}
-@media(prefers-reduced-motion:reduce){#waywin-rpg-landing *{animation:none!important;transition:none!important}}
-</style>
-<div id="waywin-rpg-landing">
-  <section class="ww-hero"><div class="ww-inner ww-layout">
-    <div>
-      <div class="ww-kicker">TAINAN WAYWIN · UNIVERSITY QUEST</div>
-      <h1>你的專業技能<br><em>打得贏魔王嗎？</em></h1>
-      <p class="ww-lead">大學職涯 RPG｜專業挑戰賽<br>選擇年級與科系，挑戰 3 道專業題目，解鎖你的分數、學霸稱號與升學攻略！</p>
-      <div class="ww-tags"><span>🎮 3 題快速挑戰</span><span>⚡ 依年級／科系分流</span><span>🏆 解鎖專屬稱號</span></div>
-      <a class="ww-btn" href="#" onclick="alert('https://script.google.com/macros/s/AKfycbwWjXeNLNYgmoPUWsB-eIPJzKDvGU-5f9JJNp3akePE9LIu4GQ_7XZcDpzpxdaxwvrD/exec');return false;" target="_blank" rel="noopener noreferrer">⚔️ 立即開始闖關 →</a>
-      <p class="ww-small">免費參加｜填寫基本資料後解鎖完整報告</p>
-    </div>
-    <div class="ww-stage-art" aria-hidden="true"><div class="ww-glow"></div><span class="ww-float one">📖</span><div class="ww-boss"><div class="ww-emoji">👾</div><strong>FINAL BOSS</strong></div><span class="ww-float two">⚔️</span><div class="ww-health"><span></span></div></div>
-  </div></section>
-  <section class="ww-section"><div class="ww-inner">
-    <h2 class="ww-heading">三步驟，解鎖你的升級路線</h2>
-    <p class="ww-desc">不用準備考卷，也不需要先決定未來。先來一場小挑戰，看看你目前的技能樹點到哪裡。</p>
-    <div class="ww-cards">
-      <div class="ww-card"><div class="ww-icon">🎓</div><h3>LEVEL 01｜選擇角色</h3><p>選擇大一到大四與就讀領域，找出屬於你的專業科目路線。</p></div>
-      <div class="ww-card"><div class="ww-icon">⚔️</div><h3>LEVEL 02｜挑戰魔王</h3><p>完成 3 道小測驗，試試自己的基礎觀念，遇到不會的也沒關係！</p></div>
-      <div class="ww-card"><div class="ww-icon">🏆</div><h3>LEVEL 03｜領取戰績</h3><p>填寫基本資料，解鎖專業分數、闖關稱號與題目解析。</p></div>
-    </div>
-  </div></section>
-  <section class="ww-section ww-subjects"><div class="ww-inner">
-    <h2 class="ww-heading">你是哪個領域的冒險者？</h2>
-    <p class="ww-desc">不同領域解鎖不同挑戰；沒有列出你的科系，也可以選「其他」自行填寫。</p>
-    <div class="ww-grid">
-      <div class="ww-major"><span>⚡</span> 電機／電子</div><div class="ww-major"><span>⚙️</span> 機械／航太</div>
-      <div class="ww-major"><span>💻</span> 資訊／資工</div><div class="ww-major"><span>🧪</span> 化工／材料</div>
-      <div class="ww-major"><span>🌊</span> 土木／環工／水利</div><div class="ww-major"><span>📊</span> 商管／經濟</div>
-      <div class="ww-major"><span>✨</span> 其他科系</div><div class="ww-major"><span>📘</span> 大一至大四</div>
-    </div>
-  </div></section>
-  <section class="ww-cta"><div class="ww-inner"><h2>你的專業魔王，準備好了嗎？</h2><p>3 題小挑戰，看看自己能解鎖哪一種學霸稱號！</p><a class="ww-btn" href="#" onclick="alert('https://script.google.com/macros/s/AKfycbwWjXeNLNYgmoPUWsB-eIPJzKDvGU-5f9JJNp3akePE9LIu4GQ_7XZcDpzpxdaxwvrD/exec');return false;" target="_blank" rel="noopener noreferrer">🎮 現在就開始挑戰 →</a></div></section>
-  <footer class="ww-footer"><div class="ww-inner">台南偉文｜陪你解鎖下一個升學目標<br>本活動為趣味測驗，分數不代表正式學力評估或錄取機率。</div></footer>
+<div class="wrap">
+  <header class="hero">
+    <div class="tag">TAINAN WAYWIN · STUDENT QUEST</div>
+    <h1>🎮 大學職涯 RPG</h1>
+    <p>直接在這裡選擇角色、挑戰魔王、解鎖升級報告</p>
+    <div class="hero-icons"><span>⚔️</span><span>📘</span><span>👾</span></div>
+  </header>
+  <main><div id="root"><p>正在載入冒險關卡……</p></div></main>
 </div>
+<script>
+const lineUrl='https://lin.ee/Po4ZQQV';
+// ★ 將下一行改成你自己的 Apps Script 網頁應用程式 /exec 網址。
+const API_URL='PASTE_YOUR_APPS_SCRIPT_EXEC_URL_HERE';
+const years=['大一','大二','大三','大四'];
+const yearMeta=[
+  {icon:'🌱',sub:'先建立基礎，探索未來方向'},
+  {icon:'🛠️',sub:'開始累積專業實力，培養核心技能'},
+  {icon:'⚔️',sub:'進入升學備戰期，面對真正的專業魔王'},
+  {icon:'🏆',sub:'準備最後衝刺，解鎖下一站'}
+];
+const goals=[
+  ['轉學／轉系','提升 GPA','探索研究所','還沒決定'],
+  ['強化專業科目','準備轉學／轉系','提前規劃研究所','改善 GPA'],
+  ['研究所筆試','研究所推甄','跨領域升學','還沒決定'],
+  ['研究所考試衝刺','推甄／備審','跨領域升學','畢業後發展']
+];
+const readiness=['還沒開始','剛開始準備','穩定準備中','遇到瓶頸'];
+const goalIconMap={
+  '轉學／轉系':'🧭','提升 GPA':'📈','探索研究所':'🔍','還沒決定':'🌫️',
+  '強化專業科目':'📚','準備轉學／轉系':'🗺️','提前規劃研究所':'🧪','改善 GPA':'📝',
+  '研究所筆試':'✍️','研究所推甄':'🎯','跨領域升學':'🚀',
+  '研究所考試衝刺':'🔥','推甄／備審':'📂','畢業後發展':'💼'
+};
+const readinessIconMap={
+  '還沒開始':'😴','剛開始準備':'🌟','穩定準備中':'⚙️','遇到瓶頸':'🧱'
+};
+let db=null,step=0,saving=false,done=false,result=null;
+let s={year:-1,major:'',otherDepartment:'',subjects:[],goal:'',readiness:'',answers:[null,null,null],name:'',phone:'',school:'',department:'',consent:false};
+const $=id=>document.getElementById(id);
+const esc=v=>String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const selected=()=>db.majors.find(m=>m.id===s.major);
+const questions=()=>db.quiz[s.major]?.[s.year<=1?'early':'late']||db.quiz.other[s.year<=1?'early':'late'];
+const stageMeta=[
+  {title:'第一關｜選擇你的年級',desc:'先決定你的角色等級，才能開啟對應的主線任務。',icons:['🎓','🌟','🗺️']},
+  {title:'第二關｜選擇專業領域',desc:'不同領域會遇到不同魔王，也會出現不同技能樹。',icons:['⚙️','💡','🧪']},
+  {title:'第三關｜點亮專業技能樹',desc:'挑選你最想強化的技能，準備進入戰鬥。',icons:['📘','✨','🛡️']},
+  {title:'第四關｜你的主線任務',desc:'升級的方向不同，攻略也會不同。',icons:['🎯','🚀','🧭']},
+  {title:'第五關｜準備狀態',desc:'看看你現在處於什麼節奏，這會影響建議但不影響分數。',icons:['😴','⚙️','🔥']},
+  {title:'第六關｜專業魔王挑戰',desc:'真正的戰鬥開始了，答對越多，最後稱號越高。',icons:['👾','⚔️','💥']},
+  {title:'最後一步｜領取升級報告',desc:'留下資料後，解鎖完整分數、稱號與解析。',icons:['📜','🏆','🎁']}
+];
+function majorIcon(name){
+  if(/電機|電子/.test(name)) return '⚡';
+  if(/機械|航太/.test(name)) return '⚙️';
+  if(/資工|資訊/.test(name)) return '💻';
+  if(/化工/.test(name)) return '🧪';
+  if(/土木|環工|水利/.test(name)) return '🏗️';
+  if(/商/.test(name)) return '💼';
+  if(/其他/.test(name)) return '📝';
+  return '📘';
+}
+function subjectIcon(name){
+  if(/工程數學|微積分|線性代數/.test(name)) return '📐';
+  if(/電子學|電路學|電磁學/.test(name)) return '⚡';
+  if(/訊號|控制/.test(name)) return '📡';
+  if(/材料/.test(name)) return '🧱';
+  if(/熱力學/.test(name)) return '🔥';
+  if(/流體/.test(name)) return '🌊';
+  if(/程式|資料|演算法/.test(name)) return '💻';
+  return '📘';
+}
+function stageCard(){
+  const meta=stageMeta[step]||stageMeta[0];
+  return `<div class="stage"><div><h3>${esc(meta.title)}</h3><p>${esc(meta.desc)}</p></div><div class="stage-icons">${meta.icons.map(i=>`<span>${i}</span>`).join('')}</div></div>`;
+}
+function cardButton({value,title,sub='',icon='✨'},field){
+  let active=field==='year'?s.year===value:s[field]===value;
+  return `<button type="button" class="choice ${active?'selected':''}" data-field="${field}" data-value="${esc(value)}"><div class="card-top"><div class="card-icon">${icon}</div><div class="card-text"><div class="card-title">${esc(title)}</div>${sub?`<div class="card-sub">${esc(sub)}</div>`:''}</div></div></button>`;
+}
+function render(){
+  let progress=done?100:Math.round((step/7)*100);
+  let h=`<div class="muted">${done?'任務完成':`LEVEL ${step+1} / 7`}</div><div class="progress"><div style="width:${progress}%"></div></div>`;
+  if(!done) h+=stageCard();
 
+  if(step===0){
+    h+=`<h2>${stageMeta[0].title}</h2><div class="choices">${years.map((v,i)=>cardButton({value:i,title:`${v}`,sub:yearMeta[i].sub,icon:yearMeta[i].icon},'year')).join('')}</div>`;
+  }
+  if(step===1){
+    h+=`<h2>${stageMeta[1].title}</h2><div class="choices">${db.majors.map(m=>cardButton({value:m.id,title:m.name,sub:m.sub||'選擇這個領域進行專業挑戰',icon:majorIcon(m.name)},'major')).join('')}</div>`;
+    if(s.major==='other') h+=input('otherDepartment','請填入科系名稱','例如：生物科技系')+'<p class="note">其他科系將提供通用升學規劃測驗，不會冒充專業檢測。</p>';
+  }
+  if(step===2){
+    h+=`<h2>${stageMeta[2].title}</h2><p class="muted">最多選 3 科想加強的科目</p><div class="choices">${selected().courses[s.year].map(v=>`<button type="button" class="choice ${s.subjects.includes(v)?'selected':''}" data-subject="${esc(v)}"><div class="card-top"><div class="card-icon">${subjectIcon(v)}</div><div class="card-text"><div class="card-title">${esc(v)}</div><div class="card-sub">加入技能樹，之後更容易追蹤需求</div></div></div></button>`).join('')}</div><p class="muted">已選 ${s.subjects.length}/3 科</p>`;
+  }
+  if(step===3){
+    h+=`<h2>${stageMeta[3].title}</h2><div class="choices">${goals[s.year].map(v=>cardButton({value:v,title:v,sub:'選擇你現在最想完成的主線任務',icon:goalIconMap[v]||'🎯'},'goal')).join('')}</div>`;
+  }
+  if(step===4){
+    h+=`<h2>${stageMeta[4].title}</h2><p class="muted">這一關不影響成績。</p><div class="choices">${readiness.map(v=>cardButton({value:v,title:v,sub:'用來判斷你目前的準備節奏',icon:readinessIconMap[v]||'✨'},'readiness')).join('')}</div>`;
+  }
+  if(step===5){
+    h+=`<h2>${stageMeta[5].title} <span class="monster">👾</span></h2><p class="muted">${esc(selected().name)}・共三題，送出後才公布答案。</p>`;
+    questions().forEach((q,i)=>{
+      h+=`<div class="q"><div class="qtitle">第 ${i+1} 題｜${esc(q.title)}</div>${q.choices.map((o,j)=>`<label class="opt"><input type="radio" name="q${i}" value="${j}" ${s.answers[i]===j?'checked':''}>${'ABCD'[j]}. ${esc(o)}</label>`).join('')}</div>`;
+    });
+  }
+  if(step===6){
+    h+=`<h2>${stageMeta[6].title}</h2><p class="muted">三題已答完！送出資料後顯示成績、稱號及題目解析。</p>`;
+    h+=input('name','姓名 *','請輸入姓名')+input('phone','手機號碼 *','09xxxxxxxx')+input('school','就讀學校 *','例如：成功大學')+input('department','就讀科系 *','例如：電機工程學系');
+    h+=`<div class="field"><label>目前年級 *</label><select disabled>${years.map((y,i)=>`<option ${i===s.year?'selected':''}>${y}</option>`).join('')}</select><p class="note">已帶入第一關所選年級。</p></div>`;
+    h+=`<div class="field"><label><input id="consent" type="checkbox" style="width:auto" ${s.consent?'checked':''}> 我已閱讀並同意以下個資使用說明 *</label><p class="note">蒐集者：台南偉文（請正式上線前填寫完整法定機構資訊）。用途：升學諮詢、測驗結果分析及相關聯絡。蒐集姓名、手機、學校、科系、年級與測驗結果。正式公開前請補充完整個資告知事項及聯絡方式。</p></div>`;
+  }
+  if(done){
+    h+=`<div class="score"><div>🏆 ${esc(result.badge)}</div><div class="big">${result.score} / 100</div><div>答對 ${result.correct} / 3 題</div></div>`;
+    h+=`<div class="summary-grid" style="margin-top:16px"><div class="mini-card"><b>玩家資料</b><p>🎓 ${esc(years[s.year])}・${esc(selected().name)}</p><p>🏫 ${esc(s.school)}｜${esc(s.department)}</p></div><div class="mini-card"><b>冒險方向</b><p>主線任務：${esc(s.goal)}</p><p>準備狀態：${esc(s.readiness)}</p></div></div>`;
+    h+=`<h2>已點亮的技能</h2><p>${s.subjects.map(v=>`<span class="pill">${esc(v)}</span>`).join('')}</p>`;
+    h+=`<h2>專業題解析</h2>`;
+    result.explanations.forEach((v,i)=>{h+=`<div class="q"><b>第 ${i+1} 題 ${v.correct?'✅':'❌'}</b><p>正解：${esc(v.right)}</p><p class="muted">${esc(v.explanation)}</p></div>`});
+    h+=`<div class="line-box"><div class="line-title">加入台南偉文 LINE，解鎖更多攻略</div><div class="muted">想進一步了解課程、升學規劃、最新活動，或直接與我們聯繫，可以加入官方 LINE。</div><a class="line-btn" href="${lineUrl}" target="_blank" rel="noopener noreferrer">加入台南偉文 LINE</a></div>`;
+    h+=`<p class="success">✓ 已確認儲存至台南偉文名單試算表。</p><button class="btn back" id="restart">重新挑戰</button>`;
+  }
+  if(!done){
+    h+=`<p class="error" id="error"></p><div class="nav"><button class="btn back" id="prev" ${step===0||saving?'disabled':''}>上一關</button><button class="btn" id="next" ${saving?'disabled':''}>${saving?'資料送出中…':step===6?'送出資料・解鎖報告':step===5?'完成測驗':'下一關 →'}</button></div>`;
+  }
+  $('root').innerHTML=h;
+
+  if(step===6&&!done){['name','phone','school','department','otherDepartment'].forEach(k=>{if($(k))$(k).addEventListener('input',e=>s[k]=e.target.value)});$('consent').addEventListener('change',e=>s.consent=e.target.checked)}
+  if(step===1 && $('otherDepartment')) $('otherDepartment').addEventListener('input',e=>s.otherDepartment=e.target.value);
+  document.querySelectorAll('[data-field]').forEach(b=>b.addEventListener('click',()=>{let k=b.dataset.field,v=b.dataset.value;if(k==='year'){s.year=Number(v);s.subjects=[];s.goal='';s.answers=[null,null,null]}else if(k==='major'){s.major=v;s.subjects=[];s.answers=[null,null,null]}else s[k]=v;render()}));
+  document.querySelectorAll('[data-subject]').forEach(b=>b.addEventListener('click',()=>{let v=b.dataset.subject;if(s.subjects.includes(v))s.subjects=s.subjects.filter(x=>x!==v);else if(s.subjects.length<3)s.subjects.push(v);render()}));
+  document.querySelectorAll('input[type=radio]').forEach(r=>r.addEventListener('change',()=>s.answers[Number(r.name.slice(1))]=Number(r.value)));
+  if($('prev')) $('prev').onclick=()=>{step--;render()};
+  if($('next')) $('next').onclick=next;
+  if($('restart')) $('restart').onclick=()=>{step=0;done=false;result=null;s={year:-1,major:'',otherDepartment:'',subjects:[],goal:'',readiness:'',answers:[null,null,null],name:'',phone:'',school:'',department:'',consent:false};render()};
+}
+function input(id,label,placeholder){return `<div class="field"><label for="${id}">${label}</label><input id="${id}" maxlength="100" value="${esc(s[id])}" placeholder="${esc(placeholder)}" autocomplete="off"></div>`}
+function error(t){$('error').textContent=t}
+function next(){
+  if(step===0&&s.year<0) return error('請選擇年級');
+  if(step===1&&(!s.major||(s.major==='other'&&!s.otherDepartment.trim()))) return error('請選擇或填寫科系');
+  if(step===2&&!s.subjects.length) return error('請至少選一科');
+  if(step===3&&!s.goal) return error('請選擇目標');
+  if(step===4&&!s.readiness) return error('請選擇準備狀態');
+  if(step===5&&s.answers.some(v=>v===null)) return error('請完成三道題目');
+  if(step===6){
+    if(!s.name.trim()||!s.school.trim()||!s.department.trim()||!/^09\d{8}$/.test(s.phone)) return error('請填姓名、學校、科系及正確10碼手機');
+    if(!s.consent) return error('請先勾選個資使用同意');
+    if(!configured()) return error('網站管理員尚未設定試算表收件網址。請先設定 API_URL。');
+    saving=true;render();
+    sendSubmission();
+    return;
+  }
+  step++;render();
+}
+function configured(){return /^https:\/\/script\.google\.com\/macros\/s\/.+\/exec(?:\?.*)?$/.test(API_URL)}
+function requestJsonp(params){
+  return new Promise((resolve,reject)=>{
+    const name='waywinCallback'+Math.random().toString(36).slice(2);
+    const el=document.createElement('script');
+    const timeout=setTimeout(()=>finish(new Error('後端連線逾時')),15000);
+    function finish(err,data){clearTimeout(timeout);delete window[name];el.remove();err?reject(err):resolve(data)}
+    window[name]=data=>finish(null,data);
+    el.onerror=()=>finish(new Error('無法讀取後端'));
+    const q=new URLSearchParams({...params,callback:name});
+    el.src=API_URL+'?'+q.toString();document.head.appendChild(el);
+  });
+}
+async function sendSubmission(){
+  const id=(window.crypto&&crypto.randomUUID)?crypto.randomUUID():'rpg-'+Date.now()+'-'+Math.random().toString(36).slice(2);
+  const data={...s,requestId:id};
+  try {
+    // 跨來源 POST：實際是否成功，以獨立的狀態查詢確認，不因 no-cors 回傳而假設成功。
+    fetch(API_URL,{method:'POST',mode:'no-cors',headers:{'Content-Type':'text/plain;charset=UTF-8'},body:JSON.stringify(data)}).catch(()=>{});
+    let status=null;
+    for(let i=0;i<14;i++){
+      await new Promise(r=>setTimeout(r,1100));
+      try{status=await requestJsonp({action:'status',id});}catch(e){continue}
+      if(status?.state==='ok'){saving=false;done=true;result=status.result;render();return}
+      if(status?.state==='error')throw new Error(status.message||'儲存失敗');
+    }
+    throw new Error('目前尚未收到試算表儲存確認。請檢查 Apps Script 部署權限及執行記錄，再決定是否重新送出，以免重複。');
+  }catch(e){saving=false;render();error('儲存未確認：'+e.message)}
+}
+if(!configured()){
+  $('root').innerHTML='<div class="stage"><h3>網站已可遊玩，但尚未連接試算表</h3><p>請管理員先在 index.html 設定 API_URL（Google Apps Script /exec 網址）。</p></div>';
+}else{
+  requestJsonp({action:'game'}).then(d=>{if(!d?.majors||!d?.quiz)throw new Error(d?.error||'題庫資料不完整');db=d;render()}).catch(e=>{$('root').textContent='無法載入題庫：'+e.message});
+}
+</script>
 </body>
 </html>
