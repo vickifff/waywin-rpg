@@ -68,13 +68,29 @@
     .line-btn:hover{transform:translateY(-1px)}
     .summary-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
     .mini-card{background:#fafbff;border:1px solid #e6ebfa;border-radius:16px;padding:14px}
+    .start-screen{padding:6px 0 2px}
+    .map-card{position:relative;overflow:hidden;background:linear-gradient(135deg,#182b59,#4d44b4 52%,#8757eb);border-radius:24px;padding:26px;color:#fff;box-shadow:0 18px 40px rgba(29,43,104,.16)}
+    .map-card::before,.map-card::after{content:'';position:absolute;border-radius:50%;background:rgba(255,255,255,.08)}
+    .map-card::before{width:240px;height:240px;right:-70px;top:-90px}
+    .map-card::after{width:140px;height:140px;left:-30px;bottom:-40px}
+    .map-grid{display:grid;grid-template-columns:1.15fr .85fr;gap:18px;align-items:center;position:relative;z-index:1}
+    .map-badge{display:inline-block;padding:7px 12px;border-radius:999px;background:rgba(255,255,255,.14);font-size:12px;letter-spacing:1px;color:#e4ebff;margin-bottom:10px}
+    .map-card h2{font-size:30px;margin:4px 0 10px;color:#fff}
+    .map-card p{color:#e6ecff;line-height:1.8;margin:0 0 10px}
+    .map-illustration{background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.16);border-radius:22px;padding:16px;min-height:250px;display:flex;flex-direction:column;justify-content:space-between;backdrop-filter:blur(5px)}
+    .map-scene{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:12px}
+    .scene-box{display:flex;align-items:center;justify-content:center;height:64px;border-radius:18px;background:rgba(255,255,255,.12);font-size:28px;animation:float 2.8s ease-in-out infinite}
+    .scene-box:nth-child(2){animation-delay:.45s}.scene-box:nth-child(3){animation-delay:.9s}.scene-box:nth-child(4){animation-delay:1.2s}.scene-box:nth-child(5){animation-delay:1.6s}.scene-box:nth-child(6){animation-delay:2s}
+    .map-path{display:flex;justify-content:space-between;gap:10px;align-items:center}
+    .path-node{flex:1;text-align:center;padding:10px 8px;border-radius:16px;background:rgba(255,255,255,.12);font-size:13px;color:#eef3ff}
+    .start-btn{margin-top:14px;font-size:16px;padding:15px 22px;border-radius:999px}
+    .map-note{font-size:12px;color:#d7e2ff;margin-top:12px}
     .hidden{display:none}
     @keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-6px)}}
     @keyframes pulse{0%,100%{transform:scale(1)}50%{transform:scale(1.06)}}
     .monster{display:inline-block;animation:pulse 1.8s ease-in-out infinite}
     @media(max-width:640px){
-      body{padding:10px}.hero{padding:20px}.hero h1{font-size:24px}.hero-icons{position:static;margin-top:12px}.choices,.summary-grid{grid-template-columns:1fr}.choice{min-height:80px}main{padding:18px}
-    }
+      body{padding:10px}.hero{padding:20px}.hero h1{font-size:24px}.hero-icons{position:static;margin-top:12px}.choices,.summary-grid,.map-grid{grid-template-columns:1fr}.choice{min-height:80px}main{padding:18px}.map-card h2{font-size:24px}.map-illustration{min-height:auto}}
   </style>
 </head>
 <body>
@@ -115,7 +131,7 @@ const goalIconMap={
 const readinessIconMap={
   '還沒開始':'😴','剛開始準備':'🌟','穩定準備中':'⚙️','遇到瓶頸':'🧱'
 };
-let db=null,step=0,saving=false,done=false,result=null;
+let db=null,step=0,saving=false,done=false,result=null,started=false;
 let s={year:-1,major:'',otherDepartment:'',subjects:[],goal:'',readiness:'',answers:[null,null,null],name:'',phone:'',school:'',department:'',consent:false};
 const $=id=>document.getElementById(id);
 const esc=v=>String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
@@ -159,6 +175,41 @@ function cardButton({value,title,sub='',icon='✨'},field){
   return `<button type="button" class="choice ${active?'selected':''}" data-field="${field}" data-value="${esc(value)}"><div class="card-top"><div class="card-icon">${icon}</div><div class="card-text"><div class="card-title">${esc(title)}</div>${sub?`<div class="card-sub">${esc(sub)}</div>`:''}</div></div></button>`;
 }
 function render(){
+  if(!started){
+    const intro=`<div class="start-screen">
+      <div class="map-card">
+        <div class="map-grid">
+          <div>
+            <div class="map-badge">TAINAN WAYWIN · STUDENT QUEST</div>
+            <h2>🗺️ 進入主地圖，開始你的升級冒險</h2>
+            <p>先進入 RPG 主地圖，再依序選擇年級、科系、專業技能與主線任務，最後挑戰魔王題目並解鎖專屬報告。</p>
+            <p>這裡會先像遊戲開場一樣，按下按鈕後，才正式開始選年級。</p>
+            <button type="button" class="btn start-btn" id="startGameBtn">⚔️ 開始進入主地圖</button>
+            <div class="map-note">挑戰內容：年級分流・科系分流・專業小測驗・成績結算</div>
+          </div>
+          <div class="map-illustration">
+            <div class="map-scene">
+              <div class="scene-box">🏰</div>
+              <div class="scene-box">📘</div>
+              <div class="scene-box">👾</div>
+              <div class="scene-box">⚔️</div>
+              <div class="scene-box">🧭</div>
+              <div class="scene-box">🏆</div>
+            </div>
+            <div class="map-path">
+              <div class="path-node">主地圖</div>
+              <div class="path-node">選角色</div>
+              <div class="path-node">打魔王</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>`;
+    $('root').innerHTML=intro;
+    const btn=$('startGameBtn');
+    if(btn) btn.onclick=()=>{started=true;render()};
+    return;
+  }
   let progress=done?100:Math.round((step/7)*100);
   let h=`<div class="muted">${done?'任務完成':`LEVEL ${step+1} / 7`} · ${EXPECTED_BUILD}</div><div class="progress"><div style="width:${progress}%"></div></div>`;
   if(!done) h+=stageCard();
@@ -212,7 +263,7 @@ function render(){
   document.querySelectorAll('input[type=radio]').forEach(r=>r.addEventListener('change',()=>s.answers[Number(r.name.slice(1))]=Number(r.value)));
   if($('prev')) $('prev').onclick=()=>{step--;render()};
   if($('next')) $('next').onclick=next;
-  if($('restart')) $('restart').onclick=()=>{step=0;done=false;result=null;s={year:-1,major:'',otherDepartment:'',subjects:[],goal:'',readiness:'',answers:[null,null,null],name:'',phone:'',school:'',department:'',consent:false};render()};
+  if($('restart')) $('restart').onclick=()=>{step=0;done=false;result=null;started=false;s={year:-1,major:'',otherDepartment:'',subjects:[],goal:'',readiness:'',answers:[null,null,null],name:'',phone:'',school:'',department:'',consent:false};render()};
 }
 function input(id,label,placeholder){return `<div class="field"><label for="${id}">${label}</label><input id="${id}" maxlength="100" value="${esc(s[id])}" placeholder="${esc(placeholder)}" autocomplete="off"></div>`}
 function error(t){$('error').textContent=t}
