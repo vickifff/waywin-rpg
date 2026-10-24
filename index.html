@@ -91,7 +91,7 @@
 const lineUrl='https://lin.ee/77ny8dO';
 // ★ 將下一行改成你自己的 Apps Script 網頁應用程式 /exec 網址。
 const API_URL='https://script.google.com/macros/s/AKfycbwyQT-MFscajd6-pepRH1ojT5MR-iQiNY1GdTpF4eFzmFUU9sG1IHs7oUnBC_NAacYMOw/exec';
-  const years=['大一','大二','大三','大四'];
+const years=['大一','大二','大三','大四'];
 const yearMeta=[
   {icon:'🌱',sub:'先建立基礎，探索未來方向'},
   {icon:'🛠️',sub:'開始累積專業實力，培養核心技能'},
@@ -119,7 +119,7 @@ let s={year:-1,major:'',otherDepartment:'',subjects:[],goal:'',readiness:'',answ
 const $=id=>document.getElementById(id);
 const esc=v=>String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const selected=()=>db.majors.find(m=>m.id===s.major);
-const questions=()=>db.quiz[s.major]?.[s.year<=1?'early':'late']||db.quiz.other[s.year<=1?'early':'late'];
+const questions=()=>db.quiz[s.major]?.[s.year] || db.quiz.other?.[s.year] || [];
 const stageMeta=[
   {title:'第一關｜選擇你的年級',desc:'先決定你的角色等級，才能開啟對應的主線任務。',icons:['🎓','🌟','🗺️']},
   {title:'第二關｜選擇專業領域',desc:'不同領域會遇到不同魔王，也會出現不同技能樹。',icons:['⚙️','💡','🧪']},
