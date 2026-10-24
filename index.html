@@ -91,6 +91,7 @@
 const lineUrl='https://lin.ee/77ny8dO';
 // ★ 將下一行改成你自己的 Apps Script 網頁應用程式 /exec 網址。
 const API_URL='https://script.google.com/macros/s/AKfycbwyQT-MFscajd6-pepRH1ojT5MR-iQiNY1GdTpF4eFzmFUU9sG1IHs7oUnBC_NAacYMOw/exec';
+const EXPECTED_BUILD='RPG-4.7-20261025';
 const years=['大一','大二','大三','大四'];
 const yearMeta=[
   {icon:'🌱',sub:'先建立基礎，探索未來方向'},
@@ -159,7 +160,7 @@ function cardButton({value,title,sub='',icon='✨'},field){
 }
 function render(){
   let progress=done?100:Math.round((step/7)*100);
-  let h=`<div class="muted">${done?'任務完成':`LEVEL ${step+1} / 7`}</div><div class="progress"><div style="width:${progress}%"></div></div>`;
+  let h=`<div class="muted">${done?'任務完成':`LEVEL ${step+1} / 7`} · ${EXPECTED_BUILD}</div><div class="progress"><div style="width:${progress}%"></div></div>`;
   if(!done) h+=stageCard();
 
   if(step===0){
@@ -264,7 +265,7 @@ async function sendSubmission(){
 if(!configured()){
   $('root').innerHTML='<div class="stage"><h3>網站已可遊玩，但尚未連接試算表</h3><p>請管理員先在 index.html 設定 API_URL（Google Apps Script /exec 網址）。</p></div>';
 }else{
-  requestJsonp({action:'game'}).then(d=>{if(!d?.majors||!d?.quiz)throw new Error(d?.error||'題庫資料不完整');db=d;render()}).catch(e=>{$('root').textContent='無法載入題庫：'+e.message});
+  requestJsonp({action:'game'}).then(d=>{if(!d?.majors||!d?.quiz)throw new Error(d?.error||'題庫資料不完整');if(d.version!==EXPECTED_BUILD)throw new Error('後端題庫版本不一致！目前後端版本：'+(d.version||'舊版（未提供版本）')+'，需要版本：'+EXPECTED_BUILD+'。請將新版 Code.gs 部署為「新增版本」，並確認 GitHub API_URL 指向該部署。');if(!d.quiz.ee||!Array.isArray(d.quiz.ee[0])||!d.quiz.ee[0][0]?.title?.includes('f(x)=x²+3x'))throw new Error('大一電機題庫檢查未通過，請確認 Apps Script 部署的是新版。');db=d;render()}).catch(e=>{$('root').textContent='無法載入題庫：'+e.message});
 }
 </script>
 </body>
