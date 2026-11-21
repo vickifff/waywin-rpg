@@ -1,1 +1,206 @@
 
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>台南偉文｜聖誕幸運刮刮樂・嘉年華・直刮版 7.0</title>
+<style>
+:root{--pine:#17564b;--deep:#103c37;--berry:#df5361;--gold:#e7b953;--cream:#fff9eb;--ink:#253f3d}
+*{box-sizing:border-box}html,body{margin:0;min-height:100%;font-family:system-ui,-apple-system,"Noto Sans TC","Microsoft JhengHei",sans-serif;color:var(--ink)}
+body{background:radial-gradient(circle at 15% 10%,#fee0b4 0,transparent 29%),radial-gradient(circle at 85% 12%,#f8c6c9 0,transparent 32%),linear-gradient(145deg,#fff9ed,#f7ecda 60%,#f9e1d9);overflow-x:hidden}
+.background{position:fixed;inset:0;z-index:-1;pointer-events:none;background-image:radial-gradient(#fff 1.5px,transparent 1.6px);background-size:38px 38px;opacity:.65}
+.page{width:min(100% - 28px,650px);margin:24px auto 45px}
+.top{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:12px}
+.brand{font-size:13px;font-weight:900;letter-spacing:.08em;color:var(--pine)}
+.pill{font-size:12px;font-weight:800;color:#994153;background:#ffe6e4;border:1px solid #f2b5b6;border-radius:40px;padding:8px 12px}
+.hero{position:relative;overflow:hidden;border-radius:26px 26px 18px 18px;background:linear-gradient(135deg,#1e7463,#174f49 70%,#10443e);color:white;padding:31px 23px 65px;text-align:center;box-shadow:0 13px 35px #245b4b23}
+.hero:before,.hero:after{content:"";position:absolute;border-radius:50%;border:2px solid #ffffff24;width:160px;height:160px}.hero:before{top:-96px;left:-44px}.hero:after{right:-85px;bottom:-95px}
+.garland{position:absolute;left:0;top:0;width:100%;height:38px;border-bottom:2px solid #ffe0a447;border-radius:0 0 50% 50%;display:flex;justify-content:space-around;align-items:flex-start;padding:11px 28px}
+.light{width:10px;height:16px;border-radius:50%;background:#f8c968;box-shadow:0 0 12px #f6d584}.light:nth-child(2n){background:#ff9d99;box-shadow:0 0 12px #ff9d99}.light:nth-child(3n){background:#c9e8d5;box-shadow:0 0 12px #c9e8d5}
+.eyebrow{margin-top:18px;font-size:12px;font-weight:800;letter-spacing:.18em;color:#f7d88a}
+.hero h1{font-size:clamp(31px,6.8vw,46px);line-height:1.24;letter-spacing:.07em;margin:13px 0 8px;text-shadow:0 3px 0 #103e3877}
+.hero .sub{font-size:15px;color:#f7e9cf;line-height:1.7;margin:0}
+.float{position:absolute;font-size:35px;filter:drop-shadow(0 5px 2px #0016);animation:float 3.6s ease-in-out infinite}.float.one{left:9%;top:43%}.float.two{right:8%;top:41%;animation-delay:-1.8s}
+@keyframes float{50%{transform:translateY(-10px) rotate(8deg)}}
+.scratch-wrap{position:relative;margin:-42px 14px 0;padding:16px;border-radius:24px;background:#fffef8;box-shadow:0 15px 33px #64452227;border:3px solid #f8d3a5}
+.ribbon{display:flex;align-items:center;justify-content:center;gap:8px;margin:1px auto 12px;font-size:13px;font-weight:900;color:#ae5e42}
+.ribbon::before,.ribbon::after{content:"";height:1px;flex:1;background:#eac9ab}
+.scratch-card{border-radius:18px;border:2px solid #ecb85f;overflow:hidden;background:#fff2ca;padding:7px;position:relative}
+.canvas-box{position:relative;height:228px;overflow:hidden;border-radius:13px;background:radial-gradient(circle at 50% 5%,#fffdf9 5%,#ffefdc 96%);touch-action:pan-y;user-select:none}
+.prize{height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:12px 8px}
+.prize .emoji{font-size:57px;line-height:1.1;animation:pop 1.2s ease both}
+.prize .wow{font-size:12px;color:#bc7568;font-weight:900;letter-spacing:.1em;margin:8px 0 2px}
+.prize .name{font-size:clamp(21px,5vw,29px);font-weight:1000;color:#1e6858}
+.prize .hint{font-size:12px;color:#866c62;margin-top:10px}
+canvas{position:absolute;inset:0;width:100%;height:100%;cursor:crosshair;touch-action:none}
+@keyframes pop{from{transform:scale(.65)}to{transform:scale(1)}}
+.progress{display:flex;align-items:center;gap:10px;margin:14px 5px 2px}
+.track{height:9px;background:#f2e7d9;flex:1;border-radius:20px;overflow:hidden}
+.fill{height:100%;width:0%;border-radius:20px;background:linear-gradient(90deg,#f4bd67,#e9727d);transition:width .18s}
+.percent{font-size:12px;color:#93765d;font-weight:800;min-width:34px;text-align:right}
+.status{text-align:center;color:#716760;font-size:13px;margin:11px 0 1px;min-height:21px}
+.actions{display:flex;gap:10px;margin:17px 14px 0}
+button{font:inherit;border:0;cursor:pointer;transition:transform .15s,filter .15s}
+button:active{transform:scale(.97)}
+.primary{flex:1;background:linear-gradient(115deg,#e96874,#c94a60);color:white;font-size:15px;font-weight:900;border-radius:14px;padding:15px;box-shadow:0 6px 0 #ab4052}
+.secondary{background:#fff9e9;border:2px solid #e5c9a5;color:#8d6148;border-radius:14px;padding:13px;font-weight:800}
+.detail{margin:24px 14px 0;display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.tile{background:#fffaf0;border:1px solid #f1dfc6;border-radius:17px;padding:15px;display:flex;align-items:flex-start;gap:9px;box-shadow:0 4px 12px #57421b0c}
+.tile span{font-size:24px}.tile b{font-size:13px}.tile p{font-size:12px;color:#796d64;line-height:1.55;margin:5px 0 0}
+.disclaimer{font-size:12px;color:#857368;text-align:center;line-height:1.7;margin:21px 12px 0}
+.foot{text-align:center;font-size:11px;font-weight:800;letter-spacing:.1em;color:#a37b5b;margin:20px 0}
+.confetti{position:fixed;top:-30px;width:9px;height:13px;z-index:15;pointer-events:none;animation:fall var(--t) linear forwards}
+@keyframes fall{to{transform:translate(var(--x),110vh) rotate(850deg);opacity:.5}}
+@media(max-width:440px){.page{margin-top:12px}.hero{padding-top:29px}.float{font-size:28px}.float.one{left:4%}.float.two{right:4%}.detail{grid-template-columns:1fr}.canvas-box{height:205px}.actions{flex-direction:column}.secondary{width:100%}}
+@media(prefers-reduced-motion:reduce){*,*:before,*:after{animation:none!important;transition:none!important}}
+
+/* CHRISTMAS CARNIVAL 3.0 */
+:root{--pine:#145b53;--berry:#ee4562;--gold:#f8ba38;--cream:#fff8e8}
+body{background:radial-gradient(circle at 8% 25%,#ffd5e3 0,transparent 32%),radial-gradient(circle at 92% 70%,#b7eadd 0,transparent 32%),linear-gradient(125deg,#fff4d8 0%,#ffebdd 45%,#e9fff2 100%)}
+.background{background-image:radial-gradient(#fff 2px,transparent 2.5px),radial-gradient(#ee8fa044 2px,transparent 2.5px);background-size:42px 42px,63px 63px;background-position:0 0,12px 20px;opacity:1}
+.page{max-width:670px;margin-top:15px}
+.top{padding:4px 6px}.pill{color:#ad3451;background:#ffe3ea;border-color:#ffc3d0;box-shadow:0 3px 0 #f6bac8}
+.hero{border:5px solid white;background:radial-gradient(ellipse at 50% 5%,#298775 0,transparent 62%),linear-gradient(150deg,#177264,#12574e 67%,#10433d);border-radius:34px;padding:42px 25px 85px;box-shadow:0 16px 0 #e7ab65,0 26px 42px #465f5250;isolation:isolate}
+.hero:before{width:225px;height:225px;border:7px dotted #ffffff15;top:-110px;left:-68px}.hero:after{width:190px;height:190px;border:6px dotted #ffffff20;right:-60px;bottom:-85px}
+.hero h1{font-size:clamp(37px,9vw,59px);font-weight:1000;line-height:1.18;margin:16px 0 9px;color:#fff9de;text-shadow:3px 5px 0 #0e3e39,0 0 18px #fae7a840}
+.hero .sub{position:relative;z-index:2;font-weight:700;color:#fff7de;font-size:clamp(13px,3vw,16px)}
+.eyebrow{display:inline-block;background:#f5bc45;color:#69361d;padding:7px 15px;border-radius:99px;transform:rotate(-3deg);font-size:11px;letter-spacing:.11em;box-shadow:0 4px 0 #b27e29}
+.garland{height:54px;border-bottom:4px solid #f1d58c70;padding:13px 19px;z-index:2}.light{width:13px;height:19px;transform:rotate(-15deg);box-shadow:0 0 16px 5px #ffe57a70;animation:twinkle 1.2s infinite alternate}.light:nth-child(2n){animation-delay:-.55s;transform:rotate(12deg)}.light:nth-child(3n){animation-delay:-.85s}
+@keyframes twinkle{to{filter:brightness(1.55);opacity:.55;box-shadow:0 0 5px #fff6}}
+.float{font-size:49px;z-index:1}.float.one{top:50%;left:3%}.float.two{top:48%;right:3%}
+.mini-star{position:absolute;z-index:1;color:#f9da74;animation:sparkle 2s ease-in-out infinite;font-size:23px}.mini-star.s1{top:35%;left:19%}.mini-star.s2{top:30%;right:18%;animation-delay:-.8s}.mini-star.s3{bottom:15%;left:29%;animation-delay:-1.4s}
+@keyframes sparkle{50%{opacity:.3;transform:scale(.6) rotate(45deg)}}
+.decor-hill{position:absolute;bottom:-11px;left:-5%;width:110%;height:61px;background:#fff9e9;border-radius:50% 50% 0 0;z-index:0;box-shadow:0 -9px 0 #ffffff44}
+.hero-badge{display:inline-flex;gap:6px;align-items:center;background:#f24e6f;border:2px solid #ffe0aa;border-radius:99px;padding:9px 15px;position:relative;z-index:3;margin-top:15px;font-size:12px;font-weight:900;box-shadow:0 4px 0 #a83448;animation:wobble 4s ease-in-out infinite}
+@keyframes wobble{0%,90%,100%{transform:rotate(0)}94%{transform:rotate(-3deg)}98%{transform:rotate(3deg)}}
+.snowflake{position:fixed;top:-35px;pointer-events:none;z-index:8;color:white;text-shadow:0 0 5px #5db1a1;animation:snowfall linear infinite;opacity:.8}
+@keyframes snowfall{to{transform:translate3d(var(--drift),110vh,0) rotate(280deg)}}
+.marquee{display:flex;overflow:hidden;gap:0;white-space:nowrap;margin:16px 0 3px;background:#e9516d;color:#fff;padding:9px 0;transform:rotate(-1deg);border:2px solid #fff2c1;border-radius:10px;box-shadow:0 5px 0 #f3bf62;font-size:12px;font-weight:900;letter-spacing:.12em}
+.marquee-track{display:inline-block;min-width:100%;animation:scroll 18s linear infinite;padding-left:20px}
+@keyframes scroll{to{transform:translateX(-100%)}}
+.scratch-wrap{margin:-54px 18px 0;z-index:4;border:5px solid #ffc766;border-radius:28px;background:linear-gradient(160deg,#fff,#fff8e4);box-shadow:0 9px 0 #d9856e,0 20px 45px #60422c35;padding:17px}
+.ribbon{font-size:14px;color:#a83d52}.scratch-card{border:3px dashed #e7a536;background:#fff2c7;padding:9px;border-radius:20px}
+.canvas-box{height:246px;background:repeating-radial-gradient(circle at 50% 50%,#fffdfa 0 22px,#fff2e3 23px 45px)}
+.prize .emoji{font-size:65px;filter:drop-shadow(0 7px 4px #0002)}.prize .name{color:#d94260;font-size:clamp(23px,5vw,32px);text-shadow:0 2px 0 #f8d7c3}.prize .wow{color:#ac6b24}
+.progress{margin-top:18px}.track{height:12px;border:2px solid #ead0a7;background:#fff1d7}.fill{background:linear-gradient(90deg,#67c8a6,#f7c253,#ee6280)}
+.status{font-weight:800;color:#ad4861}.primary{background:linear-gradient(130deg,#f85172,#ea395f);font-size:17px;box-shadow:0 7px 0 #af3154;border:2px solid #ffe4ae;padding:16px}.primary:hover{filter:brightness(1.08)}.secondary{background:#fff4c6;border-color:#eeb746;color:#8b5c1d}
+.detail{margin-top:33px}.tile{border:3px solid #ffe0a3;box-shadow:0 5px 0 #e9d4b4;background:#fffefa}.tile:first-child{transform:rotate(-1deg)}.tile:nth-child(2){transform:rotate(1deg)}
+.prize-preview{margin:24px 14px 0;padding:16px 12px;border:3px dashed #f0be80;border-radius:19px;background:#fff9e9;text-align:center}.prize-preview h2{font-size:16px;margin:0 0 13px;color:#996039}.preview-list{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}.preview-item{background:white;border-radius:13px;padding:11px 4px 9px;border:1px solid #f3d7b6;box-shadow:0 3px 0 #e9d8be;font-weight:800;font-size:11px}.preview-item span{display:block;font-size:29px;margin-bottom:5px;animation:float 4s ease-in-out infinite}.preview-item:nth-child(2) span{animation-delay:-1s}.preview-item:nth-child(3) span{animation-delay:-2s}.preview-item:nth-child(4) span{animation-delay:-3s}
+.disclaimer{margin-top:23px}.foot{padding-bottom:10px}
+@media(max-width:440px){.hero{padding:41px 12px 83px}.float{font-size:37px}.float.one{left:0}.float.two{right:0}.scratch-wrap{margin:-51px 8px 0;padding:12px}.canvas-box{height:211px}.hero-badge{font-size:11px}.preview-list{grid-template-columns:repeat(2,1fr)}.marquee{font-size:11px}}
+@media(prefers-reduced-motion:reduce){.snowflake{display:none}}
+/* Scratch directly on the canvas to avoid blocked start buttons in HTML previews */
+.start-overlay{pointer-events:none;position:absolute;inset:0;z-index:5;background:linear-gradient(135deg,#fff2cded,#ffd9eae9);display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:16px;gap:10px;backdrop-filter:blur(3px)}
+.start-overlay[hidden]{display:none!important}
+.start-overlay .start-icon{font-size:44px;animation:float 3s ease-in-out infinite}
+.start-overlay strong{font-size:20px;color:#a83953}
+.start-overlay p{font-size:12px;margin:0;color:#795d56}
+.start-overlay button{border-radius:99px;padding:13px 24px;color:white;background:linear-gradient(115deg,#eb4f71,#d73a59);border:2px solid #ffcf75;box-shadow:0 5px 0 #ad3754;font-weight:900;font-size:16px}
+.canvas-box:not(.is-playing) canvas{pointer-events:auto}
+.canvas-box.is-playing canvas{pointer-events:auto;z-index:3;touch-action:none;-webkit-user-select:none;user-select:none}
+.canvas-box.is-playing{touch-action:none;-webkit-user-select:none}
+/* 7.0: no start gate; scratch directly on canvas */
+button[hidden]{display:none!important}
+.actions button{min-height:54px;touch-action:manipulation;-webkit-tap-highlight-color:transparent}
+.canvas-box:not(.is-playing){touch-action:auto}
+.canvas-box:not(.is-playing) .start-overlay{touch-action:auto}
+</style>
+</head>
+<body>
+<div class="background"></div><div id="snowfield" aria-hidden="true"></div>
+<main class="page">
+ <div class="top"><div class="brand">WAYWIN ｜ 台南偉文</div><div class="pill">🎄 CHRISTMAS 2026</div></div>
+ <section class="hero" aria-label="活動主視覺">
+  <div class="garland" aria-hidden="true"><i class="light"></i><i class="light"></i><i class="light"></i><i class="light"></i><i class="light"></i><i class="light"></i><i class="light"></i></div>
+  <div class="eyebrow">2026 · CHRISTMAS SPECIAL</div>
+  <h1>聖誕幸運<br>刮刮樂 ✨</h1>
+  <p class="sub">聖誕不只送禮，偉你的未來加點分！<br>刮出屬於你的聖誕小驚喜</p>
+  <div class="float one" aria-hidden="true">🎁</div><div class="float two" aria-hidden="true">🎅</div><span class="mini-star s1">✦</span><span class="mini-star s2">✧</span><span class="mini-star s3">★</span><div class="hero-badge">🎟️ SCRATCH & WIN · 試試好手氣</div><div class="decor-hill" aria-hidden="true"></div>
+ </section>
+ <section class="scratch-wrap" aria-label="試玩刮刮卡">
+  <div class="ribbon">🎀 &nbsp; 專屬聖誕驚喜 &nbsp; 🎀</div>
+  <div class="scratch-card">
+   <div class="canvas-box" id="canvasBox">
+    <div class="prize" aria-live="polite">
+      <div class="emoji" id="prizeEmoji">🎁</div>
+      <div class="wow">恭喜你！</div>
+      <div class="name" id="prizeName">聖誕幸運小禮</div>
+      <div class="hint">好運已送達，開心迎接新的一年！</div>
+    </div>
+    <canvas id="scratch" aria-label="使用滑鼠或手指刮開銀色區域" role="img"></canvas>
+    
+   </div>
+  </div>
+  <div class="progress"><div class="track"><div class="fill" id="fill"></div></div><span class="percent" id="percent">0%</span></div>
+  <p class="status" id="status">👆 用手指或滑鼠刮開銀色區域！</p>
+ </section>
+ <div class="marquee" aria-hidden="true"><div class="marquee-track"> ✨ MERRY CHRISTMAS ✦ 聖誕驚喜開刮 ✦ GPA 期末救援 ✦ 研究所超前部署 ✦ </div><div class="marquee-track"> ✨ MERRY CHRISTMAS ✦ 聖誕驚喜開刮 ✦ GPA 期末救援 ✦ 研究所超前部署 ✦ </div></div>
+ <div class="actions">
+   
+   <button class="primary" id="again" type="button">🎁 重新抽一張刮刮卡</button>
+
+ </div>
+ <section class="detail">
+   <div class="tile"><span>📚</span><div><b>GPA 期末救援</b><p>微積分、物理等指定科目體驗與學習規劃。</p></div></div>
+   <div class="tile"><span>🎓</span><div><b>研究所超前部署</b><p>升學方向、考科規劃與課程體驗。</p></div></div>
+ </section>
+ <section class="prize-preview" aria-label="示範獎項"><h2>🎀 聖誕驚喜禮物清單 🎀</h2><div class="preview-list"><div class="preview-item"><span>🎁</span>幸運小禮</div><div class="preview-item"><span>☕</span>咖啡券</div><div class="preview-item"><span>🎟️</span>超商禮券</div><div class="preview-item"><span>📒</span>文具小禮</div></div></section>
+ <p class="disclaimer">目前為互動試玩展示版：獎項隨機模擬、可重複遊玩，<br>不具真實兌獎資格，也不會收集個人資料。</p>
+ <div class="foot">台南偉文補習班 · 2026 聖誕限定活動</div>
+</main>
+<script>
+(()=>{
+// Decorative snow; CSS-only motion, no tracking or network requests.
+const field=document.getElementById('snowfield');
+if(!window.matchMedia('(prefers-reduced-motion: reduce)').matches){for(let i=0;i<26;i++){const flake=document.createElement('span');flake.className='snowflake';flake.textContent=i%4===0?'✦':'❄';flake.style.left=Math.random()*100+'%';flake.style.fontSize=(9+Math.random()*14)+'px';flake.style.animationDuration=(7+Math.random()*11)+'s';flake.style.animationDelay=(-Math.random()*16)+'s';flake.style.setProperty('--drift',(Math.random()*140-70)+'px');field.appendChild(flake)}}
+const prizes=[
+{emoji:'🎁',name:'聖誕幸運小禮'},
+{emoji:'☕',name:'暖心咖啡券'},
+{emoji:'🎟️',name:'50 元超商禮券'},
+{emoji:'📒',name:'精美文具小禮'},
+{emoji:'🌟',name:'聖誕驚喜加碼禮'}
+];
+const canvas=document.getElementById('scratch'),ctx=canvas.getContext('2d',{willReadFrequently:true}),box=document.getElementById('canvasBox');
+const fill=document.getElementById('fill'),percent=document.getElementById('percent'),status=document.getElementById('status');
+const overlay={set hidden(v){},style:{display:''}};
+const startButton={set hidden(v){}},againButton=document.getElementById('again');
+let drawing=false,finished=false,started=false,last=null,touches=0,prizeIndex=-1,strokeDistance=0,strokeCount=0;
+function pick(){let next=Math.floor(Math.random()*prizes.length);if(next===prizeIndex)next=(next+1)%prizes.length;prizeIndex=next;const p=prizes[next];document.getElementById('prizeEmoji').textContent=p.emoji;document.getElementById('prizeName').textContent=p.name}
+function paint(){
+ const w=box.clientWidth,h=box.clientHeight,dpr=Math.min(devicePixelRatio||1,2);
+ canvas.width=Math.round(w*dpr);canvas.height=Math.round(h*dpr);ctx.setTransform(dpr,0,0,dpr,0,0);
+ const grad=ctx.createLinearGradient(0,0,w,h);grad.addColorStop(0,'#d9e2e7');grad.addColorStop(.42,'#a9b7c1');grad.addColorStop(.7,'#e2e8eb');grad.addColorStop(1,'#9cabb6');
+ ctx.globalCompositeOperation='source-over';ctx.fillStyle=grad;ctx.fillRect(0,0,w,h);
+ ctx.fillStyle='rgba(255,255,255,.3)';for(let y=10;y<h;y+=28)for(let x=10;x<w;x+=28){ctx.beginPath();ctx.arc(x,y,1.3,0,Math.PI*2);ctx.fill()}
+ ctx.textAlign='center';ctx.textBaseline='middle';ctx.fillStyle='#365764';ctx.font='900 23px system-ui';ctx.fillText('✦ 刮開銀色塗層 ✦',w/2,h/2-14);
+ ctx.font='700 13px system-ui';ctx.fillText('SCRATCH HERE  ·  試試手氣',w/2,h/2+20);
+ ctx.globalCompositeOperation='destination-out';
+}
+function reset(){pick();finished=false;started=true;drawing=false;last=null;touches=0;strokeDistance=0;strokeCount=0;fill.style.width='0%';percent.textContent='0%';status.textContent='👆 用手指直接刮開銀色區域！';canvas.style.opacity='1';canvas.style.display='block';box.classList.add('is-playing');paint()}
+
+function point(e){const r=canvas.getBoundingClientRect();return {x:e.clientX-r.left,y:e.clientY-r.top}}
+function scrape(p){ctx.globalCompositeOperation='destination-out';ctx.lineJoin='round';ctx.lineCap='round';ctx.lineWidth=30;ctx.beginPath();if(last){const d=Math.hypot(p.x-last.x,p.y-last.y);if(d>0&&d<125)strokeDistance+=d;ctx.moveTo(last.x,last.y);ctx.lineTo(p.x,p.y);ctx.stroke()}else{ctx.arc(p.x,p.y,15,0,Math.PI*2);ctx.fill()}last=p}
+function measure(){if(finished)return;const data=ctx.getImageData(0,0,canvas.width,canvas.height).data;let clear=0,total=0;const step=24;for(let i=3;i<data.length;i+=4*step){total++;if(data[i]<65)clear++}const p=Math.min(100,Math.round(clear/total*100));fill.style.width=p+'%';percent.textContent=p+'%';if(p>=38&&strokeDistance>=90&&strokeCount>=1)reveal();else if(p>7)status.textContent='✨ 繼續刮，驚喜快出現了！'}
+function confetti(){const colors=['#e76574','#e9ba58','#66b59c','#fff1bc','#9ab7e9'];for(let i=0;i<55;i++){const el=document.createElement('i');el.className='confetti';el.style.left=Math.random()*100+'vw';el.style.background=colors[i%colors.length];el.style.setProperty('--x',(Math.random()*240-120)+'px');el.style.setProperty('--t',(2+Math.random()*2)+'s');el.style.animationDelay=Math.random()*.6+'s';document.body.appendChild(el);setTimeout(()=>el.remove(),4800)}}
+function reveal(){if(finished)return;finished=true;drawing=false;canvas.style.opacity='0';setTimeout(()=>{if(finished)canvas.style.display='none'},250);fill.style.width='100%';percent.textContent='100%';status.textContent='🎉 恭喜刮出聖誕驚喜！';confetti()}
+// iOS Safari / LINE in-app browser compatibility: native touch + mouse input.
+// Do not rely only on Pointer Events; mobile file previews can differ.
+function beginAt(x,y){if(!started||finished)return;drawing=true;strokeCount++;last=null;scrape({x,y});touches++;}
+function moveAt(x,y){if(!drawing||!started||finished)return;scrape({x,y});if(++touches%3===0)measure();}
+function stopAt(){if(!drawing)return;drawing=false;last=null;measure();}
+function localTouch(t){const r=canvas.getBoundingClientRect();return{x:t.clientX-r.left,y:t.clientY-r.top};}
+canvas.addEventListener('touchstart',function(e){if(!started||finished)return;e.preventDefault();if(!drawing&&e.touches.length){const p=localTouch(e.touches[0]);beginAt(p.x,p.y)}},{passive:false});
+canvas.addEventListener('touchmove',function(e){if(!started||finished)return;e.preventDefault();if(e.touches.length){const p=localTouch(e.touches[0]);moveAt(p.x,p.y)}},{passive:false});
+canvas.addEventListener('touchend',function(e){if(started)e.preventDefault();stopAt()},{passive:false});
+canvas.addEventListener('touchcancel',stopAt,{passive:false});
+canvas.addEventListener('mousedown',function(e){if(e.button!==0||!started||finished)return;e.preventDefault();const p=point(e);beginAt(p.x,p.y)});
+window.addEventListener('mousemove',function(e){if(!drawing)return;const p=point(e);moveAt(p.x,p.y)});
+window.addEventListener('mouseup',stopAt);
+document.getElementById('again').addEventListener('click',reset);
+
+let resizeWidth=box.clientWidth;
+window.addEventListener('resize',()=>{const w=box.clientWidth;if(Math.abs(w-resizeWidth)<3)return;resizeWidth=w;if(!started&&!finished)paint()});
+reset();
+})();
+</script>
+</body></html>
