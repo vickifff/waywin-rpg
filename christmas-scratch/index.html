@@ -3,7 +3,7 @@
 <html lang="zh-Hant">
 <head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<title>台南偉文｜聖誕幸運刮刮樂・單次體驗版 8.0</title>
+<title>台南偉文｜聖誕幸運刮刮樂・重新整理可重抽版 8.1</title>
 <style>
 :root{--pine:#17564b;--deep:#103c37;--berry:#df5361;--gold:#e7b953;--cream:#fff9eb;--ink:#253f3d}
 *{box-sizing:border-box}html,body{margin:0;min-height:100%;font-family:system-ui,-apple-system,"Noto Sans TC","Microsoft JhengHei",sans-serif;color:var(--ink)}
@@ -141,7 +141,7 @@ button[hidden]{display:none!important}
    <div class="tile"><span>🎓</span><div><b>研究所超前部署</b><p>升學方向、考科規劃與課程體驗。</p></div></div>
  </section>
  <section class="prize-preview" aria-label="示範獎項"><h2>🎀 聖誕驚喜禮物清單 🎀</h2><div class="preview-list"><div class="preview-item"><span>🎁</span>幸運小禮</div><div class="preview-item"><span>☕</span>咖啡券</div><div class="preview-item"><span>🎟️</span>超商禮券</div><div class="preview-item"><span>📒</span>文具小禮</div></div></section>
- <p class="disclaimer">目前為互動展示版：同一瀏覽器限刮一次，重新整理仍保留結果。<br>不具真實兌獎資格；清除網站資料或更換裝置仍可能重新參加。</p>
+ <p class="disclaimer">目前為互動試玩版：每次開啟或重新整理頁面均可再抽一次。<br>本頁不具真實兌獎資格，也不會收集個人資料。</p>
  <div class="foot">台南偉文補習班 · 2026 聖誕限定活動</div>
 </main>
 <script>
@@ -160,9 +160,8 @@ const canvas=document.getElementById('scratch'),ctx=canvas.getContext('2d',{will
 const fill=document.getElementById('fill'),percent=document.getElementById('percent'),status=document.getElementById('status');
 const overlay={set hidden(v){},style:{display:''}};
 const startButton={set hidden(v){}};
-const STORAGE_KEY='waywin_christmas_2026_scratch_once_v1';
-function readSaved(){try{return JSON.parse(localStorage.getItem(STORAGE_KEY)||'null')}catch(e){return null}}
-function saveResult(index){try{localStorage.setItem(STORAGE_KEY,JSON.stringify({prizeIndex:index,finishedAt:Date.now()}))}catch(e){console.warn('無法保存刮獎紀錄',e)}}
+// Each page load starts a fresh scratch card.
+
 let drawing=false,finished=false,started=false,last=null,touches=0,prizeIndex=-1,strokeDistance=0,strokeCount=0;
 function pick(){let next=Math.floor(Math.random()*prizes.length);if(next===prizeIndex)next=(next+1)%prizes.length;prizeIndex=next;const p=prizes[next];document.getElementById('prizeEmoji').textContent=p.emoji;document.getElementById('prizeName').textContent=p.name}
 function paint(){
@@ -181,7 +180,7 @@ function point(e){const r=canvas.getBoundingClientRect();return {x:e.clientX-r.l
 function scrape(p){ctx.globalCompositeOperation='destination-out';ctx.lineJoin='round';ctx.lineCap='round';ctx.lineWidth=30;ctx.beginPath();if(last){const d=Math.hypot(p.x-last.x,p.y-last.y);if(d>0&&d<125)strokeDistance+=d;ctx.moveTo(last.x,last.y);ctx.lineTo(p.x,p.y);ctx.stroke()}else{ctx.arc(p.x,p.y,15,0,Math.PI*2);ctx.fill()}last=p}
 function measure(){if(finished)return;const data=ctx.getImageData(0,0,canvas.width,canvas.height).data;let clear=0,total=0;const step=24;for(let i=3;i<data.length;i+=4*step){total++;if(data[i]<65)clear++}const p=Math.min(100,Math.round(clear/total*100));fill.style.width=p+'%';percent.textContent=p+'%';if(p>=38&&strokeDistance>=90&&strokeCount>=1)reveal();else if(p>7)status.textContent='✨ 繼續刮，驚喜快出現了！'}
 function confetti(){const colors=['#e76574','#e9ba58','#66b59c','#fff1bc','#9ab7e9'];for(let i=0;i<55;i++){const el=document.createElement('i');el.className='confetti';el.style.left=Math.random()*100+'vw';el.style.background=colors[i%colors.length];el.style.setProperty('--x',(Math.random()*240-120)+'px');el.style.setProperty('--t',(2+Math.random()*2)+'s');el.style.animationDelay=Math.random()*.6+'s';document.body.appendChild(el);setTimeout(()=>el.remove(),4800)}}
-function reveal(){if(finished)return;finished=true;drawing=false;saveResult(prizeIndex);canvas.style.opacity='0';setTimeout(()=>{if(finished)canvas.style.display='none'},250);fill.style.width='100%';percent.textContent='100%';status.textContent='🎉 恭喜刮出聖誕驚喜！';confetti()}
+function reveal(){if(finished)return;finished=true;drawing=false;canvas.style.opacity='0';setTimeout(()=>{if(finished)canvas.style.display='none'},250);fill.style.width='100%';percent.textContent='100%';status.textContent='🎉 恭喜刮出聖誕驚喜！';confetti()}
 // iOS Safari / LINE in-app browser compatibility: native touch + mouse input.
 // Do not rely only on Pointer Events; mobile file previews can differ.
 function beginAt(x,y){if(!started||finished)return;drawing=true;strokeCount++;last=null;scrape({x,y});touches++;}
@@ -195,21 +194,10 @@ canvas.addEventListener('touchcancel',stopAt,{passive:false});
 canvas.addEventListener('mousedown',function(e){if(e.button!==0||!started||finished)return;e.preventDefault();const p=point(e);beginAt(p.x,p.y)});
 window.addEventListener('mousemove',function(e){if(!drawing)return;const p=point(e);moveAt(p.x,p.y)});
 window.addEventListener('mouseup',stopAt);
-function restoreOrStart(){
- const saved=readSaved();
- if(saved && Number.isInteger(saved.prizeIndex) && saved.prizeIndex>=0 && saved.prizeIndex<prizes.length){
-   prizeIndex=saved.prizeIndex;
-   document.getElementById('prizeEmoji').textContent=prizes[prizeIndex].emoji;
-   document.getElementById('prizeName').textContent=prizes[prizeIndex].name;
-   finished=true;started=false;canvas.style.display='none';
-   fill.style.width='100%';percent.textContent='100%';
-   status.textContent='🎁 你已完成本次刮獎，這就是你的聖誕驚喜！';
- } else reset();
-}
 
 let resizeWidth=box.clientWidth;
 window.addEventListener('resize',()=>{const w=box.clientWidth;if(Math.abs(w-resizeWidth)<3)return;resizeWidth=w;if(!started&&!finished)paint()});
-restoreOrStart();
+reset();
 })();
 </script>
 </body></html>
